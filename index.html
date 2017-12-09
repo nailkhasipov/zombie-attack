@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Playground</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    const canvas = document.getElementById('canvas');
+    canvas.width = window.innerWidth * 2;
+    canvas.height = window.innerHeight * 2;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    canvas.getContext('2d').scale(2,2);
+
+    const ctx = canvas.getContext('2d');
+    ctx.font = '40px Mono';
+
+    function Vector(x, y) {
+      this.x = x;
+      this.y = y;
+    }
+
+    Vector.prototype.plus = function(other) {
+      return new Vector(this.x + other.x, this.y + other.y);
+    };
+
+    function Person(x, y, emoji) {
+      this.position = new Vector(x, y);
+      this.destination = null;
+      this.emoji = emoji;
+    }
+
+    Person.prototype.draw = function() {
+      ctx.fillText(this.emoji, this.position.x, this.position.y);
+    }
+
+    Person.prototype.shoot = function() {
+      
+    }
+
+    Person.prototype.move = function() {
+      if (!this.destination) {
+        let angle = Math.random()*Math.PI*2;
+        let x = Math.floor(Math.cos(angle)*100);
+        let y = Math.floor(Math.sin(angle)*100);
+
+        this.destination = this.position.plus(new Vector(x, y));
+      }
+
+      if (this.position.x != this.destination.x && this.position.y != this.destination.y) {
+        let newX = this.position.x < this.destination.x ? 0.5 : -0.5;
+        let newY = this.position.y < this.destination.y ? 0.5 : -0.5;
+
+        this.position = this.position.plus(new Vector(newX, newY));
+      } else {
+        this.destination = null;
+      }
+    }
+
+    let zombies = [];
+
+    window.addEventListener('click', function(e) {
+      zombies.push(new Person(e.offsetX, e.offsetY, '🧟'));
+    });
+
+    let human = new Person(500, 500, '😲');
+
+    function draw() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      zombies.forEach(zombie => {
+        zombie.move();
+        zombie.draw();
+      });
+
+      human.move();
+      human.draw();
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  </script>
+</body>
+</html>
