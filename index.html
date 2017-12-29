@@ -15,10 +15,17 @@
       padding: 0;
       cursor: crosshair;
     }
+
+    .info {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
   </style>
 </head>
 <body>
   <canvas id="canvas"></canvas>
+  <audio id="shot" src="cg1.wav"></audio>
   <script>
     const canvas = document.getElementById('canvas');
     canvas.width = window.innerWidth * 2;
@@ -29,10 +36,24 @@
 
     const ctx = canvas.getContext('2d');
 
+    let info = {
+      angle: 0
+    }
+
+    let infoWrapper = document.createElement('DIV');
+    infoWrapper.className = 'info';
+    document.body.appendChild(infoWrapper);
+
+    function drawInfo() {
+      infoWrapper.innerHTML = info.angle;
+    }
+
     let UP = false;
     let DOWN = false;
     let LEFT = false;
     let RIGHT = false;
+
+    let bullets = [];
 
     window.addEventListener('keydown', function(e) {
       if (e.keyCode == 65) LEFT = true;
@@ -46,6 +67,17 @@
       if (e.keyCode == 83) DOWN = false;
       if (e.keyCode == 68) RIGHT = false;
       if (e.keyCode == 87) UP = false;
+    });
+
+    window.addEventListener('mousedown', function(e) {
+      angle = Math.atan2(player.y - e.y, player.x - e.x);
+      player.shoot(angle);
+      document.getElementById('shot').play();
+    });
+
+    window.addEventListener('mousemove', function(e) {
+      angle = Math.atan2(player.y - e.y, player.x - e.x) * 180 / Math.PI;
+      info.angle = angle;
     });
 
     function Player(x, y, emoji, speed) {
@@ -67,13 +99,46 @@
       ctx.fillText(this.emoji, this.x, this.y);
     }
 
+    Player.prototype.shoot = function(angle) {
+      let bullet = new Bullet(this.x, this.y, 20, angle);
+      console.log(bullet);
+      bullets.push(bullet);
+    }
+
+    function Bullet(x, y, speed, angle) {
+      this.x = x;
+      this.y = y;
+      this.speed = speed;
+      this.angle = angle;
+    }
+
+    Bullet.prototype.move = function() {
+      this.x -= Math.cos(this.angle) * this.speed;
+      this.y -= Math.sin(this.angle) * this.speed;
+    }
+
+    Bullet.prototype.draw = function() {
+      ctx.fillRect(this.x, this.y, 3, 3);
+    }
+
     let player = new Player(100, 100, '😲', 3);
 
     function draw() {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
+      bullets.forEach((bullet, index) => {
+        if (bullet.x > 0 && bullet.x < canvas.width && bullet.y > 0 && bullet.y < canvas.width) {
+          bullet.move();
+          bullet.draw();
+        } else {
+          bullets.splice(index, 1);
+        }
+      });
+
       player.move();
       player.draw();
+
+      drawInfo();
       
       requestAnimationFrame(draw);
     }
