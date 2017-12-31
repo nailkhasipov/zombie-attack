@@ -13,7 +13,7 @@ export function keyboard(keyCode) {
       key.isUp = false;
     }
   //Prevent the event's default behavior //(such as browser window scrolling)
-    event.preventDefault();
+    // event.preventDefault();
   };
 
   //The `upHandler`
@@ -23,7 +23,7 @@ export function keyboard(keyCode) {
       key.isDown = false;
       key.isUp = true;
     }
-    event.preventDefault();
+    // event.preventDefault();
   };
   //Attach event listeners
   window.addEventListener(

@@ -1,16 +1,15 @@
 import {canvas, ctx} from './library/canvas';
 
 export default class {
-  constructor(x, y, emoji, speed) {
+  constructor(x, y, speed) {
     this.x = x;
     this.y = y;
-    this.emoji = emoji;
     this.speed = speed;
   }
 
   draw() {
-    ctx.font = '40px Mono';
-    ctx.fillText(this.emoji, this.x, this.y);
+    ctx.fillStyle = "#33cc33";
+    ctx.fillRect(this.x, this.y, 5, 5);
   }
 
   follow(victim) {

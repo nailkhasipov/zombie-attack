@@ -1,15 +1,20 @@
 * {
-  box-sizing: border-box;
+  position: fixed;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  cursor: crosshair;
+body {
+  background: #eee;
 }
 
-.info {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+canvas {
+  cursor: none;
+  background: #fff;
+  width: 100vmin;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%)translateY(-50%);
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
