@@ -61,7 +61,6 @@ function drawZombies() {
 
 function generateZombies() {
   setInterval(function() {
-    // https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
     let x = Math.floor(Math.random() * canvas.width) + 0;
     let y = Math.floor(Math.random() * canvas.height) + 0;
     let zombie = new Enemy(x, y, 0.1);
