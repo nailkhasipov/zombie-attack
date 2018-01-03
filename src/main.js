@@ -1,10 +1,12 @@
 import {canvas, ctx} from './library/canvas';
-import {cursor} from './library/cursor';
+import {makeCursor} from './library/cursor';
 import {keyboard} from './library/keyboard';
 import {collisionDetection} from './library/collision';
 
 import Player from './Player';
 import Enemy from './Enemy';
+
+let cursor = makeCursor();
 
 let pause = false;
 let SPACE = keyboard(32);
@@ -14,11 +16,10 @@ let player = new Player(10, 10, 0.5);
 let bullets = [];
 let zombies = [];
 
-//@TODO move to cursor lib
-canvas.addEventListener('mousedown', function(event) {
+cursor.click = function() {
   let target = cursor.getPosition(event);
   bullets.push(player.shoot(target));
-});
+}
 
 generateZombies();
 
