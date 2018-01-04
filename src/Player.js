@@ -3,9 +3,11 @@ import {keyboard} from './library/keyboard';
 import Bullet from './Bullet';
 
 export default class {
-  constructor(x, y, speed) {
+  constructor(x, y, image, speed) {
     this.x = x;
     this.y = y;
+    this.img = new Image();
+    this.img.src = image;
     this.speed = speed;
     this.direction = {
       up: false,
@@ -46,7 +48,6 @@ export default class {
   }
 
   draw() {
-    ctx.fillStyle = "#000";
-    ctx.fillRect(this.x, this.y, 5, 5);
+    ctx.drawImage(this.img, this.x, this.y);
   }
 }
