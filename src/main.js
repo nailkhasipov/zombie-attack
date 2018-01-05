@@ -25,10 +25,10 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   cursor.draw();
+  blood.forEach((drop) => drop.draw());
   player.draw();
   zombies.forEach(zombie => zombie.draw());
   bullets.forEach((bullet, index) => bullet.draw());
-  blood.forEach((drop) => drop.draw());
 
   if (!pause) {
     player.move();
@@ -44,6 +44,13 @@ function draw() {
           bullets.splice(bulletIndex, 1);
         }
       });
+    });
+
+    zombies.forEach((zombie, zombieIndex) => {
+      if (isCollide(player, zombie)) {
+        alert('GAME OVER');
+        document.location.reload();
+      }
     });
   }
 
