@@ -1,0 +1,20 @@
+* {
+  position: fixed;
+}
+
+body {
+  background: #eee;
+}
+
+canvas {
+  cursor: none;
+  background: #fff;
+  width: 100vmin;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%)translateY(-50%);
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
